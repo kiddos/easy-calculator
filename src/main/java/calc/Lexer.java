@@ -13,6 +13,7 @@ public class Lexer {
     public static class Pair {
         private Tokens token;
         private double value;
+
         public Pair(Tokens token, double value) {
             this.token = token;
             this.value = value;
@@ -30,7 +31,7 @@ public class Lexer {
     public Pair[] process(String entry) {
         pairs = new ArrayList<>();
         cache = "";
-        for (int i = 0 ; i < entry.length(); ++i) {
+        for (int i = 0; i < entry.length(); ++i) {
             char c = entry.charAt(i);
             if (c == '+') {
                 addNumber();

@@ -11,10 +11,10 @@ public class Parser {
 
     private int getOperatorCount() {
         int count = 0;
-        for (int i = 0 ; i < expression.size(); ++i) {
+        for (int i = 0; i < expression.size(); ++i) {
             Lexer.Pair p = expression.get(i);
             if (p.getToken() != Lexer.Tokens.NUMBER) {
-                ++ count;
+                ++count;
             }
         }
         return count;
@@ -26,7 +26,7 @@ public class Parser {
         while (getOperatorCount() > 0) {
             boolean priority = false;
             // apply negative numbers
-            for (int i = 0 ; i < expression.size() ; ++i) {
+            for (int i = 0; i < expression.size(); ++i) {
                 Lexer.Pair p = expression.get(i);
                 if (p.getToken() == Lexer.Tokens.SUB) {
                     // only if the index is first and the previous token is not a number
