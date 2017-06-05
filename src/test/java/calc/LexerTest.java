@@ -158,4 +158,30 @@ public class LexerTest extends TestCase {
         assertEquals(pairs[8].getValue(), 55.0);
         assertEquals(pairs[8].getToken(), Lexer.Tokens.NUMBER);
     }
+
+    public void testLexerTokenSpecial() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("e");
+        assertEquals(pairs.length, 1);
+        assertEquals(pairs[0].getValue(), Math.E);
+        assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);
+
+        pairs = lexer.process("π");
+        assertEquals(pairs.length, 1);
+        assertEquals(pairs[0].getValue(), Math.PI);
+        assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);
+    }
+
+    public void testLexerTokenSpecialWithSpace() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("10 e");
+        assertEquals(pairs.length, 2);
+        assertEquals(pairs[1].getValue(), Math.E);
+        assertEquals(pairs[1].getToken(), Lexer.Tokens.NUMBER);
+
+        pairs = lexer.process("9 π");
+        assertEquals(pairs.length, 2);
+        assertEquals(pairs[1].getValue(), Math.PI);
+        assertEquals(pairs[1].getToken(), Lexer.Tokens.NUMBER);
+    }
 }

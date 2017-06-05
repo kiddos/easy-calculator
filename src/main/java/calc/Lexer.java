@@ -44,6 +44,12 @@ public class Lexer {
             } else if (c == '/') {
                 addNumber();
                 pairs.add(new Pair(Tokens.DIV, 0));
+            } else if (c == 'e') {
+                addNumber();
+                pairs.add(new Pair(Tokens.NUMBER, Math.E));
+            } else if (c == 'π') {
+                addNumber();
+                pairs.add(new Pair(Tokens.NUMBER, Math.PI));
             } else if (c == ' ') {
                 addNumber();
             } else {
