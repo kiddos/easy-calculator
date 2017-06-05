@@ -7,13 +7,30 @@ import java.util.Arrays;
 
 
 public class Parser {
-    ArrayList<Lexer.Pair> expression;
+    private ArrayList<Lexer.Pair> expression;
 
     public double parse(Lexer.Pair[] pairs) throws CalculatorException {
         expression = new ArrayList<>(Arrays.asList(pairs));
 
         while (expression.size() > 1) {
-            boolean proirity = false;
+            boolean priority = false;
+            // apply negative numbers
+            for (int i = 0 ; i < expression.size() ; ++i) {
+                Lexer.Pair p = expression.get(i);
+                if (p.getToken() == Lexer.Tokens.SUB) {
+                    // only if the index is first and the previous token is not a number
+                    if (i == 0 || expression.get(i - 1).getToken() != Lexer.Tokens.NUMBER) {
+                        if (i >= expression.size() - 1)
+                            throw new ParseException("Invalid Expression: index out of bound");
+                        Lexer.Pair next = expression.get(i + 1);
+                        Lexer.Pair result = new Lexer.Pair(Lexer.Tokens.NUMBER, -next.getValue());
+                        for (int j = 0; j < 2; ++j) {
+                            expression.remove(expression.get(i));
+                        }
+                        expression.add(i, result);
+                    }
+                }
+            }
             // evaluate multiplication and division first in order
             for (int i = 0; i < expression.size(); ++i) {
                 Lexer.Pair p = expression.get(i);
@@ -26,7 +43,7 @@ public class Parser {
                     if (prev.getToken() != Lexer.Tokens.NUMBER ||
                             next.getToken() != Lexer.Tokens.NUMBER)
                         throw new ParseException("Invalid Expression: incorrect type");
-                    proirity = true;
+                    priority = true;
                     Lexer.Pair result;
                     if (p.getToken() == Lexer.Tokens.MUL) {
                         result = new Lexer.Pair(Lexer.Tokens.NUMBER,
@@ -46,7 +63,7 @@ public class Parser {
                 }
             }
             // and then evaluate addition and subtraction in order
-            if (!proirity) {
+            if (!priority) {
                 for (int i = 0; i < expression.size(); ++i) {
                     Lexer.Pair p = expression.get(i);
                     if (p.getToken() == Lexer.Tokens.ADD ||
