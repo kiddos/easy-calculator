@@ -10,55 +10,100 @@ public class LexerTest extends TestCase {
     public void tearDown() throws Exception {
     }
 
-    public void testProcessSingle() throws Exception {
+    public void testLexerTokenZero() throws Exception {
         Lexer lexer = new Lexer();
         Lexer.Pair[] pairs = lexer.process("0");
         assertEquals(pairs.length, 1);
         assertEquals(pairs[0].getValue(), 0.0);
         assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);
+    }
 
-        pairs = lexer.process("   0   ");
+    public void testLexerTokenZeroFloatingPoint() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("0.0");
         assertEquals(pairs.length, 1);
         assertEquals(pairs[0].getValue(), 0.0);
         assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);
+    }
 
-        pairs = lexer.process("   000000   ");
+    public void testLexerTokenNonZero() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("1");
+        assertEquals(pairs.length, 1);
+        assertEquals(pairs[0].getValue(), 1.0);
+        assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);
+    }
+
+    public void testLexerTokenNonZeroFloatingPoint() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("1.0");
+        assertEquals(pairs.length, 1);
+        assertEquals(pairs[0].getValue(), 1.0);
+        assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);
+
+        pairs = lexer.process("1.");
+        assertEquals(pairs.length, 1);
+        assertEquals(pairs[0].getValue(), 1.0);
+        assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);
+    }
+
+    public void testLexerTokenZeroWithSpace() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process(" 0 ");
         assertEquals(pairs.length, 1);
         assertEquals(pairs[0].getValue(), 0.0);
         assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);
+    }
 
-        pairs = lexer.process("   1000000   ");
+    public void testLexerTokenMultipleZeroWithSpace() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process(" 0000000 ");
+        assertEquals(pairs.length, 1);
+        assertEquals(pairs[0].getValue(), 0.0);
+        assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);
+    }
+
+    public void testLexerTokenNonZeroNumberWithSpace() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process(" 1000000 ");
         assertEquals(pairs.length, 1);
         assertEquals(pairs[0].getValue(), 1000000.0);
         assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);
+    }
 
-        pairs = lexer.process("+");
+    public void testLexerTokenAdd() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("+");
         assertEquals(pairs.length, 1);
         assertEquals(pairs[0].getValue(), 0.0);
         assertEquals(pairs[0].getToken(), Lexer.Tokens.ADD);
+    }
 
-        pairs = lexer.process("  +  ");
-        assertEquals(pairs.length, 1);
-        assertEquals(pairs[0].getValue(), 0.0);
-        assertEquals(pairs[0].getToken(), Lexer.Tokens.ADD);
-
-        pairs = lexer.process("-");
+    public void testLexerTokenSubtract() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("-");
         assertEquals(pairs.length, 1);
         assertEquals(pairs[0].getValue(), 0.0);
         assertEquals(pairs[0].getToken(), Lexer.Tokens.SUB);
+    }
 
-        pairs = lexer.process("*");
+    public void testLexerTokenMultiply() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("*");
         assertEquals(pairs.length, 1);
         assertEquals(pairs[0].getValue(), 0.0);
         assertEquals(pairs[0].getToken(), Lexer.Tokens.MUL);
+    }
 
-        pairs = lexer.process("/");
+    public void testLexerTokenDivide() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("/");
         assertEquals(pairs.length, 1);
         assertEquals(pairs[0].getValue(), 0.0);
         assertEquals(pairs[0].getToken(), Lexer.Tokens.DIV);
     }
 
-    public void testProcessMultiple() throws Exception {
+    public void testLexerTokenMultipleWithSpace() throws Exception {
         Lexer lexer = new Lexer();
         Lexer.Pair[] pairs = lexer.process("1 + 1");
         assertEquals(pairs.length, 3);
@@ -68,9 +113,23 @@ public class LexerTest extends TestCase {
         assertEquals(pairs[1].getToken(), Lexer.Tokens.ADD);
         assertEquals(pairs[2].getValue(), 1.0);
         assertEquals(pairs[2].getToken(), Lexer.Tokens.NUMBER);
+    }
 
+    public void testLexerTokenMultipleWithoutSpace() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("1+1");
+        assertEquals(pairs.length, 3);
+        assertEquals(pairs[0].getValue(), 1.0);
+        assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);
+        assertEquals(pairs[1].getValue(), 0.0);
+        assertEquals(pairs[1].getToken(), Lexer.Tokens.ADD);
+        assertEquals(pairs[2].getValue(), 1.0);
+        assertEquals(pairs[2].getToken(), Lexer.Tokens.NUMBER);
+    }
 
-        pairs = lexer.process("11 + 22 - 33 * 44 / 55");
+    public void testLexerTokenLongExpression() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("11 + 22 - 33 * 44 / 55");
         assertEquals(pairs.length, 9);
         assertEquals(pairs[0].getValue(), 11.0);
         assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);

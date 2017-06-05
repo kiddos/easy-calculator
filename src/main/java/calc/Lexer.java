@@ -33,24 +33,23 @@ public class Lexer {
         for (int i = 0 ; i < entry.length(); ++i) {
             char c = entry.charAt(i);
             if (c == '+') {
+                addNumber();
                 pairs.add(new Pair(Tokens.ADD, 0));
-                addNumber();
             } else if (c == '-') {
+                addNumber();
                 pairs.add(new Pair(Tokens.SUB, 0));
-                addNumber();
             } else if (c == '*') {
+                addNumber();
                 pairs.add(new Pair(Tokens.MUL, 0));
-                addNumber();
             } else if (c == '/') {
-                pairs.add(new Pair(Tokens.DIV, 0));
                 addNumber();
+                pairs.add(new Pair(Tokens.DIV, 0));
             } else if (c == ' ') {
                 addNumber();
             } else {
                 cache += c;
             }
         }
-
         addNumber();
         return pairs.toArray(new Pair[0]);
     }
