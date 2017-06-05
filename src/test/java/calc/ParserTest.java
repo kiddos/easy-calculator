@@ -138,6 +138,19 @@ public class ParserTest extends TestCase {
         assertTrue(thrown);
     }
 
+    public void testParseInvalidNumberExpression() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("0 1 2 3");
+        Parser parser = new Parser();
+        boolean thrown = false;
+        try {
+            parser.parse(pairs);
+        } catch (ParseException e) {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
+
     public void testParserEvaluateLongFloatExpression() throws Exception {
         Lexer lexer = new Lexer();
         Lexer.Pair[] pairs = lexer.process("11.1 + 22.2 - 33.3 * 44.4 / 55.5");

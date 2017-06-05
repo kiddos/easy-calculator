@@ -9,10 +9,21 @@ import java.util.Arrays;
 public class Parser {
     private ArrayList<Lexer.Pair> expression;
 
+    private int getOperatorCount() {
+        int count = 0;
+        for (int i = 0 ; i < expression.size(); ++i) {
+            Lexer.Pair p = expression.get(i);
+            if (p.getToken() != Lexer.Tokens.NUMBER) {
+                ++ count;
+            }
+        }
+        return count;
+    }
+
     public double parse(Lexer.Pair[] pairs) throws CalculatorException {
         expression = new ArrayList<>(Arrays.asList(pairs));
 
-        while (expression.size() > 1) {
+        while (getOperatorCount() > 0) {
             boolean priority = false;
             // apply negative numbers
             for (int i = 0 ; i < expression.size() ; ++i) {
@@ -91,6 +102,9 @@ public class Parser {
                     }
                 }
             }
+        }
+        if (expression.size() != 1) {
+            throw new ParseException("Invalid Expression: Too many values");
         }
         return expression.get(0).getValue();
     }
