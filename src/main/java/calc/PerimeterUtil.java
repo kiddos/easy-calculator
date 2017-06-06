@@ -11,7 +11,7 @@ public class PerimeterUtil {
                 throw new ComputeException("Invalid Expression: result in negative output");
             }
             return w * 2 + h * 2;
-        } catch (ArithmeticException e) {
+        } catch (Exception e) {
             throw new ComputeException("Invalid Expression: incorrect input");
         }
     }
@@ -26,7 +26,7 @@ public class PerimeterUtil {
                 throw new ComputeException("Invalid Expression: result in negative output");
             }
             return t + b + s1 + s2;
-        } catch (ArithmeticException e) {
+        } catch (Exception e) {
             throw new ComputeException("Invalid Expression: incorrect input");
         }
     }

@@ -12,7 +12,7 @@ public class AreaUtil {
                 throw new ComputeException("Invalid Input: result in negative output");
             }
             return area;
-        } catch (ArithmeticException e) {
+        } catch (Exception e) {
             throw new ComputeException("Invalid Input: incorrect input type");
         }
     }
@@ -27,7 +27,7 @@ public class AreaUtil {
                 throw new ComputeException("Invalid Input: result in negative output");
             }
             return area;
-        } catch (ArithmeticException e) {
+        } catch (Exception e) {
             throw new ComputeException("Invalid Input: incorrect input type");
         }
     }
