@@ -89,7 +89,7 @@ public class LexerTest extends TestCase {
 
     public void testLexerTokenMultiply() throws Exception {
         Lexer lexer = new Lexer();
-        Lexer.Pair[] pairs = lexer.process("*");
+        Lexer.Pair[] pairs = lexer.process("×");
         assertEquals(pairs.length, 1);
         assertEquals(pairs[0].getValue(), 0.0);
         assertEquals(pairs[0].getToken(), Lexer.Tokens.MUL);
@@ -97,10 +97,18 @@ public class LexerTest extends TestCase {
 
     public void testLexerTokenDivide() throws Exception {
         Lexer lexer = new Lexer();
-        Lexer.Pair[] pairs = lexer.process("/");
+        Lexer.Pair[] pairs = lexer.process("÷");
         assertEquals(pairs.length, 1);
         assertEquals(pairs[0].getValue(), 0.0);
         assertEquals(pairs[0].getToken(), Lexer.Tokens.DIV);
+    }
+
+    public void testLexerTokenExponential() throws Exception {
+        Lexer lexer = new Lexer();
+        Lexer.Pair[] pairs = lexer.process("^");
+        assertEquals(pairs.length, 1);
+        assertEquals(pairs[0].getValue(), 0.0);
+        assertEquals(pairs[0].getToken(), Lexer.Tokens.EXP);
     }
 
     public void testLexerTokenMultipleWithSpace() throws Exception {
@@ -129,7 +137,7 @@ public class LexerTest extends TestCase {
 
     public void testLexerTokenLongExpression() throws Exception {
         Lexer lexer = new Lexer();
-        Lexer.Pair[] pairs = lexer.process("11 + 22 - 33 * 44 / 55");
+        Lexer.Pair[] pairs = lexer.process("11 + 22 - 33 × 44 ÷ 55");
         assertEquals(pairs.length, 9);
         assertEquals(pairs[0].getValue(), 11.0);
         assertEquals(pairs[0].getToken(), Lexer.Tokens.NUMBER);

@@ -7,7 +7,7 @@ public class Lexer {
     private String cache;
 
     public enum Tokens {
-        ADD, SUB, MUL, DIV, NUMBER
+        ADD, SUB, MUL, DIV, EXP, NUMBER
     }
 
     public static class Pair {
@@ -39,12 +39,15 @@ public class Lexer {
             } else if (c == '-') {
                 addNumber();
                 pairs.add(new Pair(Tokens.SUB, 0));
-            } else if (c == '*') {
+            } else if (c == '×') {
                 addNumber();
                 pairs.add(new Pair(Tokens.MUL, 0));
-            } else if (c == '/') {
+            } else if (c == '÷') {
                 addNumber();
                 pairs.add(new Pair(Tokens.DIV, 0));
+            } else if (c == '^') {
+                addNumber();
+                pairs.add(new Pair(Tokens.EXP, 0));
             } else if (c == 'e') {
                 addNumber();
                 pairs.add(new Pair(Tokens.NUMBER, Math.E));
